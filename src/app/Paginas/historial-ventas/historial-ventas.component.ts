@@ -11,23 +11,21 @@
     facturas: Factura[] = [];
 
     constructor(private facturaService: FacturaService) { }
-
+  
     ngOnInit(): void {
       this.obtenerTodasFacturas();
     }
-
+  
     obtenerTodasFacturas(): void {
-      this.facturaService.obtenerTodasFacturas().subscribe(
-        facturas => {
-          this.facturas = facturas;
-          console.log(this.facturas);
-          
-        },
-        error => {
-          console.error('Error al obtener las facturas:', error);
-        }
-      );
+      this.facturaService.obtenerTodasFacturas()
+        .subscribe(facturas => this.facturas = facturas);
     }
-
-
+  
+    eliminarFactura(idFactura: number): void {
+      this.facturaService.eliminarFactura(idFactura)
+        .subscribe(() => {
+          // Eliminar la factura de la lista después de eliminarla del servidor
+          this.facturas = this.facturas.filter(factura => factura.idFactura !== idFactura);
+        });
+    }
   }
